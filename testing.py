@@ -1,5 +1,5 @@
 import requests
-from ursl import URLS
+from urls import URLS
 
 def populate(balances):
     '''
