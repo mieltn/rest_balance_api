@@ -61,6 +61,7 @@ def getBalance(client_id):
     Client id should be sent in get request url.
     Returns status and client instance.
     '''
+    
     client = Client.query.get_or_404(client_id)
     if request.args:
         currency = request.args['currency']
