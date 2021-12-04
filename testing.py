@@ -12,12 +12,14 @@ def populate(balances):
     return 'ok'
 
 
-def get_balance(client_id):
+def get_balance(client_id, currency=None):
     '''
     Test function for getting balance of a given client.
     '''
-
-    r = requests.get(URLS['get'] + str(client_id)).json()
+    cur_arg = ''
+    if currency:
+        cur_arg = f'?currency={currency}'
+    r = requests.get(URLS['get'] + str(client_id) + cur_arg).json()
     return r
 
 
