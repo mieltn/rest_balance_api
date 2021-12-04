@@ -63,16 +63,17 @@ def getBalance(client_id):
     '''
     client = Client.query.get_or_404(client_id)
     if request.args:
+        currency = request.args['currency']
         r = requests.get(URLS['currency']).json()
         return jsonify(
             status=200,
             output={
                 'client_id': client.id,
-                'balance': client.balance * r['data']['USD'],
-                'currency': 'USD'
+                'balance': client.balance * r['data'][currency],
+                'currency': currency
             }
         )
-        
+
     return jsonify(
         status=200,
         output=client.serialize()
