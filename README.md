@@ -17,6 +17,7 @@ db.create_all()
 exit()
 ```
 Либо использовать <i>sql_schema.txt</i>.
+
 5. Записать в переменную основной файл приложения `export FLASK_APP=app.py`
 6. Запустить сервер `flask run`
 
