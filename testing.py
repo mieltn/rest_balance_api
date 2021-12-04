@@ -16,6 +16,7 @@ def get_balance(client_id, currency=None):
     '''
     Test function for getting balance of a given client.
     '''
+    
     cur_arg = ''
     if currency:
         cur_arg = f'?currency={currency}'
