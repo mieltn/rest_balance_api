@@ -1,4 +1,4 @@
-API_KEY = 'e1ec72b0-54ea-11ec-91fb-13a5b979b7ff'
+API_KEY = 'XXXX'
 
 URLS = {
     'get': 'http://127.0.0.1:5000/api/client/balance/',
