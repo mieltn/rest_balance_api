@@ -5,3 +5,5 @@ There are three main methods:
 - adding new transaction
 
 For subsidary needs API could add new clients.
+
+To run API 

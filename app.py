@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import requests
+from urls import URLS
 
 # initialize app, reference database and configure database connection
 app = Flask(__name__)
@@ -60,8 +61,18 @@ def getBalance(client_id):
     Client id should be sent in get request url.
     Returns status and client instance.
     '''
-
     client = Client.query.get_or_404(client_id)
+    if request.args:
+        r = requests.get(URLS['currency']).json()
+        return jsonify(
+            status=200,
+            output={
+                'client_id': client.id,
+                'balance': client.balance * r['data']['USD'],
+                'currency': 'USD'
+            }
+        )
+        
     return jsonify(
         status=200,
         output=client.serialize()
@@ -151,28 +162,26 @@ def addTransaction():
         buyer_exists = Client.query.get(buyer_id)
 
         # if any of clients absent, call client add method
-        add_url = 'http://127.0.0.1:5000/api/client/add'
         params = {'balance': 0}
         if not seller_exists:
-            seller_resp = requests.post(add_url, json=params).json()
+            seller_resp = requests.post(URLS['add'], json=params).json()
             seller_id = seller_resp['added']['client_id']
 
         if not buyer_exists:
-            buyer_resp = requests.post(add_url, json=params).json()
+            buyer_resp = requests.post(URLS['add'], json=params).json()
             buyer_id = buyer_resp['added']['client_id']
 
-        # update balamces and add transaction
-        update_url = 'http://127.0.0.1:5000/api/client/update/'
+        # update balances and add transaction
         amount = request.json['amount']
 
         # first, try to call update on buyer to make sure there are enougth money
         params_buyer = {'amount': amount, 'action': 'writeoff'}
-        update_buyer_resp = requests.patch(update_url + str(buyer_id), json=params_buyer).json()
+        update_buyer_resp = requests.patch(URLS['update'] + str(buyer_id), json=params_buyer).json()
         # if request was executed successfully, update seller balance
         # then add new transaction to database
         if update_buyer_resp['status'] == 200:
             params_seller = {'amount': amount, 'action': 'credit'}
-            update_seller_resp = requests.patch(update_url + str(seller_id), json=params_seller).json()
+            update_seller_resp = requests.patch(URLS['update'] + str(seller_id), json=params_seller).json()
             
             new_transaction = Transaction(
                 amount = amount,

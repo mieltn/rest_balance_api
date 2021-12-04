@@ -1,14 +1,14 @@
 import requests
+from ursl import URLS
 
 def populate(balances):
     '''
     Populate database with clients for testing
     '''
 
-    url = 'http://127.0.0.1:5000/api/client/add'
     for balance in balances:
         params = {'balance': balance}
-        r = requests.post(url, json=params)
+        r = requests.post(URLS['add'], json=params)
     return 'ok'
 
 
@@ -17,8 +17,7 @@ def get_balance(client_id):
     Test function for getting balance of a given client.
     '''
 
-    url = 'http://127.0.0.1:5000/api/client/balance/'
-    r = requests.get(url + str(client_id)).json()
+    r = requests.get(URLS['get'] + str(client_id)).json()
     return r
 
 
@@ -28,9 +27,8 @@ def update_balance(client_id, amount, action):
     Depending on the action received, balance could be increased or decreased.
     '''
 
-    url = 'http://127.0.0.1:5000/api/client/update/'
     params = {'amount': amount, 'action': action}
-    r = requests.patch(url + str(client_id), json=params).json()
+    r = requests.patch(URLS['update'] + str(client_id), json=params).json()
     return r
 
 
@@ -39,9 +37,8 @@ def transfer(seller_id, buyer_id, amount):
     Test function for performing new transaction.
     '''
 
-    url = 'http://127.0.0.1:5000/api/transaction'
     params = {'amount': amount, 'seller_id': seller_id, 'buyer_id': buyer_id}
-    r = requests.post(url, json=params).json()
+    r = requests.post(URLS['transfer'], json=params).json()
     return r
 
 
@@ -70,4 +67,3 @@ if __name__ == '__main__':
     print(get_balance(1))
     print(get_balance(4))
 
-    
