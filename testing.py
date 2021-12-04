@@ -70,11 +70,4 @@ if __name__ == '__main__':
     print(get_balance(1))
     print(get_balance(4))
 
-
-    # testing error cases
     
-
-
-
-
-
