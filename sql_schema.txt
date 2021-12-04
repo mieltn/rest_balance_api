@@ -1,0 +1,14 @@
+CREATE TABLE clients (
+	id INTEGER NOT NULL, 
+	balance FLOAT, 
+	PRIMARY KEY (id)
+);
+CREATE TABLE transactions (
+	id INTEGER NOT NULL, 
+	amount FLOAT, 
+	seller_id INTEGER, 
+	buyer_id INTEGER, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(seller_id) REFERENCES clients (id), 
+	FOREIGN KEY(buyer_id) REFERENCES clients (id)
+);
